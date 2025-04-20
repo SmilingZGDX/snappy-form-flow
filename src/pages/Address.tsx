@@ -1,8 +1,10 @@
-
 import { FormLayout } from "@/components/layout/FormLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+import { useCustomer } from "@/context/CustomerContext";
+import { toast } from "@/hooks/use-toast";
 import {
   Form,
   FormControl,
@@ -12,14 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   addressLine1: z.string().min(1, "Address line 1 is required"),
@@ -33,6 +28,7 @@ const formSchema = z.object({
 
 export default function Address() {
   const navigate = useNavigate();
+  const { addCustomer } = useCustomer();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,8 +44,18 @@ export default function Address() {
   });
 
   const handleSubmit = () => {
-    // In a real app, we'd submit the entire form data here
-    // For now, we'll just navigate to the dashboard
+    addCustomer({
+      name: "New Customer",
+      email: "customer@example.com",
+      document: "Passport: ABC123",
+      status: "Complete"
+    });
+    
+    toast({
+      title: "Success",
+      description: "Customer registration completed successfully",
+    });
+    
     navigate("/dashboard");
   };
 

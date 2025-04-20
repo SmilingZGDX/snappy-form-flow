@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CustomerProvider } from "./context/CustomerContext";
 import Landing from "./pages/Landing";
 import CustomerDetails from "./pages/CustomerDetails";
 import CustomerName from "./pages/CustomerName";
@@ -19,30 +20,32 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Registration Flow */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/customer-details" element={<CustomerDetails />} />
-          <Route path="/customer-name" element={<CustomerName />} />
-          <Route path="/proof-of-identity" element={<ProofOfIdentity />} />
-          <Route path="/contact-details" element={<ContactDetails />} />
-          <Route path="/address" element={<Address />} />
+    <CustomerProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Registration Flow */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/customer-details" element={<CustomerDetails />} />
+            <Route path="/customer-name" element={<CustomerName />} />
+            <Route path="/proof-of-identity" element={<ProofOfIdentity />} />
+            <Route path="/contact-details" element={<ContactDetails />} />
+            <Route path="/address" element={<Address />} />
 
-          {/* Admin Dashboard */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-          
-          {/* Catch-all route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+            {/* Admin Dashboard */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </CustomerProvider>
   </QueryClientProvider>
 );
 

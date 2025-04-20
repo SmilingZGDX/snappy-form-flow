@@ -4,14 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { User, Users, FileText, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useCustomer } from "@/context/CustomerContext";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { customers } = useCustomer();
 
   const stats = [
     {
       title: "Total Customers",
-      value: "128",
+      value: customers.length.toString(),
       icon: <Users className="h-5 w-5 text-primary" />,
       change: "+12% from last month",
     },
@@ -80,7 +82,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentCustomers.map((customer) => (
+                {customers.slice(0, 5).map((customer) => (
                   <div
                     key={customer.id}
                     className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0"
@@ -105,13 +107,15 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
-              <Button
-                variant="link"
-                className="mt-4 px-0"
-                onClick={() => navigate("/customers")}
-              >
-                View all customers
-              </Button>
+              {customers.length > 5 && (
+                <Button
+                  variant="link"
+                  className="mt-4 px-0"
+                  onClick={() => navigate("/customers")}
+                >
+                  View all customers
+                </Button>
+              )}
             </CardContent>
           </Card>
 
